@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>당신의 순발력을 확인하세요!</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js"></script>
+<body>
+  <script type="text/javascript">
+  var game = new Phaser.Game(400, 600, Phaser.CANVAS, null, { preload: preload, create: create, update: update});
+   
+    function preload(){
+      game.load.image("Start" , "./Start.png");
+      game.load.image("How" , "./How.png");
+      game.load.image("Back" , "./back.png");
+      game.load.image("Box" ,  "./en.png");
+      game.load.image("Score" ,  "./Score.png");
+      game.load.image("Background" ,  "./Background.png");
+      game.load.image("Choice" ,  "./Choice.png");
+      game.load.image("One" , "./One.png");
+      game.load.image("Two" , "./Two.png");
+      game.load.image("Three" , "./Three.png");
+      game.load.image("C1" , "./C1.png");
+      game.load.image("C2" , "./C2.png");
+      game.load.image("C3" , "./C3.png");
+      game.load.image("C4" , "./C4.png");
+      game.load.image("Bogi1","./Bogi1.png");
+      game.load.image("Bogi2","./Bogi2.png");
+      game.load.image("Bogi3","./Bogi3.png");
+      game.load.image("Bogi4","./Bogi4.png");
+      game.load.image("Haert1" , "./haert.png");
+      game.load.image("Haert2" , "./haertbr.jpg");
+      game.load.image("HaertBar" , "./haertbar.png");
+      game.load.image("Bg" , "./bg.png");
+      game.load.image("Mbackground" , "./Middle.png");
+      game.load.image("GameO" , "./gameover.png");
+      game.load.image("Re" , "./Re.png");
+      game.load.image("HP" , "./HowPlay.png");
+
+
+    }
+
+
+    var button;//시자버튼
+    var stage;//스테이지
+    var stagenumber = 5;
+    var time=2;//초세는
+    var number;//랜덤받는 변수
+    var bogi;
+    var haert=40;
+    var score=0;
+    var T=4000;
+
+    function create(){
+      game.physics.startSystem(Phaser.Physics.ARCADE);
+      game.add.sprite(0,400,"Choice");
+      game.add.sprite(0,0,"Bg");
+      button10= game.add.button(50,425,"Start",Middle,this);//x좌표,y좌표,사용할 이미지,기능,Middle안에 this(즉 Middle안에 쓰인것들)
+      button20= game.add.button(50,525,"How",How,this);
+      button30= game.add.button(0,0,"Back",create,this);
+    }
+    function How(){
+      button10.pendingDestroy = true;//버튼없애기
+      button20.pendingDestroy = true;//버튼없애기
+      game.add.sprite(0,0,"HP");
+      button30 = game.add.button(0,0,"Back",create,this);
+    }
+    function update(){
+
+    }
+
+    function Middle(){//초기화면
+      game.add.sprite(0,0,"Mbackground");
+      button10.pendingDestroy = true;//버튼없애기
+      button20.pendingDestroy = true;//버튼없애기
+      button30.pendingDestroy = true;//버튼없애기
+
+      game.time.events.add(2000,Start,this);
+      
+    }
+    function Menual(){
+
+    }
+    function Start(){//본화면 
+      score=0;
+      haert=40;
+      game.add.sprite(200,0,"HaertBar");
+      h1 = game.add.sprite(240,40,"Haert1");
+      h2 = game.add.sprite(280,40,"Haert1");
+      h3 = game.add.sprite(320,40,"Haert1");
+      game.add.sprite(0,0,"Score");
+      game.add.sprite(0,80,"Background");
+      game.add.sprite(0,400,"Choice");
+
+
+  buttonngameover = game.add.button(50,425,"Re",Start,this);
+      button1 = game.add.button(100,400,"C1",Check1,this);
+      button2 = game.add.button(200,400,"C2",Check2,this);
+      button3 = game.add.button(100,500,"C3",Check3,this);
+      button4 = game.add.button(200,500,"C4",Check4,this);
+      number = game.rnd.integerInRange(1, 4);
+      button1.pendingDestroy = false;
+      button2.pendingDestroy = false;
+      button3.pendingDestroy = false;
+      button4.pendingDestroy = false;
+      buttonngameover.pendingDestroy = true;
+
+      game.add.sprite(40,120,"Bogi"+number);
+      s = game.add.text(0,20, "Score : " + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
+      timer = game.time.create(false);
+      timer.loop(T,OverTime,this);
+      timer.start();
+    }
+    function Check1(){
+      timer.destroy();
+      game.add.sprite(0,80,"Background");
+      game.add.sprite(0,0,"Score");
+      game.time.events.add(2000,Random,this);
+
+      if(number!=1)
+      {
+        game.add.sprite(200+haert,40,"Haert2");
+        haert+=40;
+      }
+      else{
+        score+=10;
+        if(score%50 == 0&&T>1000)
+        {
+          T-=200;
+        }
+
+      }
+      number = game.rnd.integerInRange(1, 4);
+      s = game.add.text(0,20, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
+      timer = game.time.create(false);
+      timer.loop(T,OverTime,this);
+      if(haert==160)
+        {
+          buttonngameover.pendingDestroy = true;
+          game.time.events.add(0,GameOver,this);
+        }
+        else
+        {
+          timer.start();
+        }
+    }
+    function Check2(){
+      timer.destroy();
+      game.add.sprite(0,80,"Background");
+      game.add.sprite(0,0,"Score");
+      game.time.events.add(2000,Random,this);
+      if(number!=2)
+      {
+        game.add.sprite(200+haert,40,"Haert2");
+        haert+=40;
+      }
+      else{
+        score+=10;
+        if(score%50 == 0&&T>1000)
+        {
+          T-=200;
+        }
+      }
+      number = game.rnd.integerInRange(1, 4);
+      s = game.add.text(0,20, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
+      timer = game.time.create(false);
+      timer.loop(T,OverTime,this);
+      if(haert==160)
+        {
+          buttonngameover.pendingDestroy = true;
+          game.time.events.add(0,GameOver,this);
+        }
+        else
+        {
+          timer.start();
+        }
+    }
+    function Check3(){
+      timer.destroy();
+      game.add.sprite(0,80,"Background");
+      game.add.sprite(0,0,"Score");
+      game.time.events.add(2000,Random,this);
+      if(number!=3)
+      {
+        game.add.sprite(200+haert,40,"Haert2");
+        haert+=40;
+      }
+      else{
+        score+=10;
+        if(score%50 == 0&&T>1000)
+        {
+          T-=200;
+        }
+      }
+      number = game.rnd.integerInRange(1, 4);
+      s = game.add.text(0,20, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
+      timer = game.time.create(false);
+      timer.loop(T,OverTime,this);
+      if(haert==160)
+        {
+          buttonngameover.pendingDestroy = true;
+          game.time.events.add(0,GameOver,this);
+        }
+        else
+        {
+          timer.start();
+        }
+
+    }
+    function Check4(){
+      timer.destroy();
+      game.add.sprite(0,80,"Background");
+      game.add.sprite(0,0,"Score");
+      game.time.events.add(2000,Random,this);
+      if(number!=4)
+      {
+        game.add.sprite(200+haert,40,"Haert2");
+        haert+=40;
+      }
+      else{
+        score+=10;
+        if(score%50 == 0&&T>1000)
+        {
+          T-=200;
+        }
+      }
+      number = game.rnd.integerInRange(1, 4);
+      s = game.add.text(0,20, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
+      timer = game.time.create(false);
+      timer.loop(T,OverTime,this);
+      if(haert==160)
+        {
+          buttonngameover.pendingDestroy = true;
+          game.time.events.add(0,GameOver,this);
+        }
+        else
+        {
+          timer.start();
+        }
+
+    }
+    function Random(){
+      if(number == 1)
+      {
+      bogi = game.add.sprite(40,120,"Bogi1");
+      button1.inputEnabled = true;
+      button2.inputEnabled = true;
+      button3.inputEnabled = true;
+      button4.inputEnabled = true;
+         timer.start();
+      }
+      else if(number == 2)
+      {
+        bogi = game.add.sprite(40,120,"Bogi2");
+        button1.inputEnabled = true;
+      button2.inputEnabled = true;
+      button3.inputEnabled = true;
+      button4.inputEnabled = true;
+        timer.start();
+      }
+      else if(number == 3)
+      {
+        bogi = game.add.sprite(40,120,"Bogi3");
+        button1.inputEnabled = true;
+      button2.inputEnabled = true;
+      button3.inputEnabled = true;
+      button4.inputEnabled = true;
+        timer.start();
+      }
+      else if(number == 4)
+      {
+        bogi = game.add.sprite(40,120,"Bogi4");
+        button1.inputEnabled = true;
+      button2.inputEnabled = true;
+      button3.inputEnabled = true;
+      button4.inputEnabled = true;
+        timer.start();
+      }
+
+    }
+    function OverTime(){
+      game.time.events.add(0,ButtonNO,this);
+      game.add.sprite(200+haert,40,"Haert2");
+      haert+=40;
+      game.add.sprite(0,80,"Background");
+      game.add.sprite(0,0,"Score");
+       s = game.add.text(0,20, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
+      game.time.events.add(2000,Random,this);
+      number = game.rnd.integerInRange(1, 4);
+    }
+    function ButtonNO(){
+      button1.inputEnabled = false;
+      button2.inputEnabled = false;
+      button3.inputEnabled = false;
+      button4.inputEnabled = false;
+    }
+    function GameOver(){
+      timer.destroy();
+      game.add.sprite(0,0,"GameO");
+      buttonngameover = game.add.button(50,425,"Re",Start,this);
+    buttonngameover.pendingDestroy = false;
+    button1.pendingDestroy = true;
+    button2.pendingDestroy = true;
+    button3.pendingDestroy = true;
+    button4.pendingDestroy = true;
+    }
+  </script>
+</body>
+</html>
