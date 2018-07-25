@@ -302,6 +302,7 @@
     function GameOver(){
       timer.destroy();
       game.add.sprite(0,0,"GameO");
+      game.add.text(150,325, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
       buttonngameover = game.add.button(50,425,"Re",Start,this);
     buttonngameover.pendingDestroy = false;
     button1.pendingDestroy = true;
