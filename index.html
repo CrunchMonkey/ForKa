@@ -287,6 +287,11 @@
        s = game.add.text(0,20, "점수:" + score, { font: "30px Arial", fill: "#ff0044", align: "center" });
       game.time.events.add(2000,Random,this);
       number = game.rnd.integerInRange(1, 4);
+      if(haert==160)
+        {
+          buttonngameover.pendingDestroy = true;
+          game.time.events.add(0,GameOver,this);
+        }
     }
     function ButtonNO(){
       button1.inputEnabled = false;
